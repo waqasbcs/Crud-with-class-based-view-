@@ -1,0 +1,57 @@
+{% extends 'enroll/base.html' %}
+{% block content %}
+<div class="row">
+  <div class="col-sm-4 offset-1 mt-2">
+    <h4 class="text-center alert alert-warning">Add new student</h4>
+    <form action="" method="POST" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" class="btn btn-danger" value="Add">
+    </form>
+  </div>
+  <div class="col-sm-7 offset-0 mt-2">
+    <h4 class="text-center alert alert-success">Show student information</h4>
+    {% if stu %}
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Address</th>
+          <th scope="col">Email</th>
+          <th scope="col">Password</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for st in stu %}
+        <tr>
+          <th scope="row">{{st.id}}</th>
+          <td>{{ st.first_name }}</td>
+          <td>{{ st.last_name }}</td>
+          <td>{{ st.phone }}</td>
+          <td>{{ st.address }}</td>
+          <td>{{ st.email }}</td>
+          <td>{{ st.password }}</td>
+          <td>
+            <div class="d-flex">
+              <a href="{% url 'update' st.id %}" class="btn btn-warning mr-1">Edit</a>
+              <form action="{% url 'delete' st.id %}" method="post" novalidate class='d-inline'>
+                {% csrf_token %}
+                <input type="submit" class="btn btn-info mr-1" value="Delete">
+              </form>
+            </div>
+          </td>
+          
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <!-- Add a message if no students are available -->
+    <p>No students available.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}
